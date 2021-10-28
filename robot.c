@@ -377,6 +377,7 @@ int wallfound = 0;
 
 void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_right_sensor, int left_sensor, int right_sensor) {
     
+    
     if ((front_left_sensor == 0) && (front_right_sensor == 0) && (left_sensor == 0) && (right_sensor == 0) && (start == 0)) {
             start = 1;
             robot->angle = 30;
@@ -384,7 +385,7 @@ void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_r
     
     
     if ((front_left_sensor == 0) && (front_right_sensor == 0)){
-            if (robot->currentSpeed<10)
+            if (robot->currentSpeed<11)
                 robot->direction = UP;
     }
     else if ((front_left_sensor>0) || (front_right_sensor>0) || (right_sensor>1)){
@@ -392,7 +393,10 @@ void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_r
         //robot->direction = LEFT;
         
     }
-    if (right_sensor >=3)
+    if ((left_sensor >=3) && (right_sensor < 1))
+        robot->direction = RIGHT;
+    
+    else if ((right_sensor >=3) && (left_sensor < 1))
         robot->direction = LEFT;
     
     
@@ -402,14 +406,15 @@ void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_r
     }
     else if (left_sensor >=3 && right_sensor <=1 && wallfound ==1)
         robot->direction = RIGHT;
-    if (((front_right_sensor>1) || right_sensor==3) && wallfound ==1 && (left_sensor == 0)){
+    
+    if (((front_right_sensor>1) || right_sensor>3) && wallfound ==1 && (left_sensor == 0)){
         robot->direction = LEFT;
     }
-    else if (right_sensor <= 1 && wallfound ==1){
+    else if ((right_sensor <= 1) && wallfound ==1){
         robot->direction = RIGHT;
     }
     
-    else if ((front_left_sensor >0) && (front_right_sensor >0) && (left_sensor> 0) && (left_sensor> 0)){
+    else if ((front_left_sensor >2) && (front_right_sensor >2) && (right_sensor> 1) && (left_sensor> 1)){
         robot->angle -=180;
     }
     
