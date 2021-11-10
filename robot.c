@@ -1,41 +1,18 @@
 #include "robot.h"
 
 void setup_robot(struct Robot *robot){
-    /*
-    robot->x = OVERALL_WINDOW_WIDTH/2-50;
-    robot->y = OVERALL_WINDOW_HEIGHT-50;
-    robot->true_x = OVERALL_WINDOW_WIDTH/2-50;
-    robot->true_y = OVERALL_WINDOW_HEIGHT-50;
-    robot->angle = 0;
-    */
-    /*
-    robot->x = 15 + 15;
-    robot->y = 170 + 10;
-    robot->true_x = 15 + 15;
-    robot->true_y = 170 + 10;
-    robot->angle = 90;
-    
-    robot->width = ROBOT_WIDTH;
-    robot->height = ROBOT_HEIGHT;
-    robot->direction = 0;
-    robot->currentSpeed = 0;
-    robot->crashed = 0;
-    robot->auto_mode = 0;
-     */
-    
-    robot->x = 0;
-        robot->y = 40;
-        robot->true_x = 0;
-        robot->true_y = 40;
+        robot->x = 270;
+        robot->y = 460;
+        robot->true_x = 270;
+        robot->true_y = 460;
         robot->width = ROBOT_WIDTH;
         robot->height = ROBOT_HEIGHT;
         robot->direction = 0;
-        robot->angle = 90;
+        robot->angle = 0;
         robot->currentSpeed = 0;
         robot->crashed = 0;
         robot->auto_mode = 0;
-
-    
+ 
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
 int robot_off_screen(struct Robot * robot){
@@ -447,11 +424,13 @@ void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_r
         }
         
         if ((front_left_sensor == 0) && (front_right_sensor == 0)){
-                if (robot->currentSpeed<14)
+                if (robot->currentSpeed<6)
                     robot->direction = UP;
         }
         else if ((front_left_sensor>0) || (front_right_sensor>0) || (right_sensor>1)){
-            robot->currentSpeed = 3;
+            if (robot->currentSpeed > 3){
+               robot->currentSpeed -=1;
+            }
         }
 
         if ((left_sensor >=3) && (right_sensor < 1))
@@ -472,31 +451,12 @@ void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_r
             robot->direction = LEFT;
         }
         else if ((front_left_sensor >0) && (front_right_sensor >0) && (right_sensor> 0) && (leftest_sensor <=2)){
-            robot ->currentSpeed =1;
+            if(robot ->currentSpeed >1){
+                robot->currentSpeed -=1;
+            }
             robot->direction = LEFT;
         }
         else if ((right_sensor <= 1) && wallfound ==1){
             robot->direction = RIGHT;
         }
-    /*
-    else if ((robot->currentSpeed>0) && ((front_left_sensor == 1) || (front_right_sensor == 1)) ) {
-        robot->direction = DOWN;
-    }
-    else if ((robot->currentSpeed==0) && ((front_left_sensor == 1) || (front_right_sensor == 1)) ) {
-        robot->direction = LEFT;
-    }
-    else if ((robot->currentSpeed==0) && ((front_left_sensor == 1) || (front_right_sensor == 0)) ) {
-        robot->direction = RIGHT;
-    }
-    else if ((robot->currentSpeed==0) && ((front_left_sensor == 0) || (front_right_sensor == 1)) ) {
-        robot->direction = RIGHT;
-    }
-    */
 }
-
-/* Extra
- if ((front_left_sensor == 0) && (front_right_sensor == 0) && (left_sensor == 0) && (right_sensor == 0) && (started == 1)) {
-     if (robot->currentSpeed<10)
-         robot->direction = UP;
-         started = 0;
- }*/
