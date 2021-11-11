@@ -1,17 +1,17 @@
 #include "robot.h"
 
 void setup_robot(struct Robot *robot){
-        robot->x = 270;
-        robot->y = 460;
-        robot->true_x = 270;
-        robot->true_y = 460;
-        robot->width = ROBOT_WIDTH;
-        robot->height = ROBOT_HEIGHT;
-        robot->direction = 0;
-        robot->angle = 0;
-        robot->currentSpeed = 0;
-        robot->crashed = 0;
-        robot->auto_mode = 0;
+    robot->x = 620;
+    robot->y = 40;
+    robot->true_x = 620;
+    robot->true_y = 40;
+    robot->width = ROBOT_WIDTH;
+    robot->height = ROBOT_HEIGHT;
+    robot->direction = 0;
+    robot->angle = 270;
+    robot->currentSpeed = 0;
+    robot->crashed = 0;
+    robot->auto_mode = 0;
  
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
@@ -126,7 +126,7 @@ int checkRobotSensorFrontLeftAllWalls(struct Robot * robot, struct Wall_collecti
     score = 0;
     sensorSensitivityLength =  floor(SENSOR_VISION/5);
 
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < 5; i++)
     {
         ptr = head_store;
         xDir = round(robotCentreX+(-ROBOT_WIDTH/2)*cos((robot->angle)*PI/180)-(-ROBOT_HEIGHT/2-SENSOR_VISION+sensorSensitivityLength*i)*sin((robot->angle)*PI/180));
@@ -251,7 +251,7 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     int robotCentreX, robotCentreY, xTR, yTR, xTL, yTL, xBR, yBR, xBL, yBL;
     SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
 
-    
+    /*
     //Other Display options:
     // The actual square which the robot is tested against (not so nice visually with turns, but easier
     // to test overlap
@@ -267,7 +267,7 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     int xDirInt = robot->x+ROBOT_WIDTH/2+ (int) xDir;
     int yDirInt = robot->y+ROBOT_HEIGHT/2+ (int) yDir;
     SDL_RenderDrawLine(renderer,robot->x+ROBOT_WIDTH/2, robot->y+ROBOT_HEIGHT/2, xDirInt, yDirInt);
-    
+    */
     
     // Creating the Robot
     //Rotating Square
@@ -303,6 +303,7 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     int sensor_sensitivity =  floor(SENSOR_VISION/5);
     int i;
     
+    
     // Front Right sensor
     for (i = 0; i < 5; i++)
     {
@@ -311,8 +312,8 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
         xTL = (int) xDir;
         yTL = (int) yDir;
 
-        SDL_Rect rect = {xTL, yTL, 2, sensor_sensitivity};
-        SDL_SetRenderDrawColor(renderer, 80+(20*(5-i)), 80+(20*(5-i)), 80+(20*(5-i)), 255);
+        SDL_Rect rect = {xTL, yTL, 4, sensor_sensitivity/3};
+        SDL_SetRenderDrawColor(renderer, 255, 105, 180, 255);
         SDL_RenderDrawRect(renderer, &rect);
         SDL_RenderFillRect(renderer, &rect);
     }
@@ -325,8 +326,8 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
         xTL = (int) xDir;
         yTL = (int) yDir;
 
-        SDL_Rect rect = {xTL, yTL, 2, sensor_sensitivity};
-        SDL_SetRenderDrawColor(renderer, 80+(20*(5-i)), 80+(20*(5-i)), 80+(20*(5-i)), 255);
+        SDL_Rect rect = {xTL, yTL, 4, sensor_sensitivity/3};
+        SDL_SetRenderDrawColor(renderer, 255, 105, 180, 255);
         SDL_RenderDrawRect(renderer, &rect);
         SDL_RenderFillRect(renderer, &rect);
     }
@@ -339,8 +340,8 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
         xTL = (int) xDir;
         yTL = (int) yDir;
 
-        SDL_Rect rect = {xTL, yTL, 2, sensor_sensitivity};
-        SDL_SetRenderDrawColor(renderer, 80+(20*(5-i)), 80+(20*(5-i)), 80+(20*(5-i)), 255);
+        SDL_Rect rect = {xTL, yTL, 4, sensor_sensitivity/3};
+        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
         SDL_RenderDrawRect(renderer, &rect);
         SDL_RenderFillRect(renderer, &rect);
     }
@@ -353,8 +354,8 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
         xTL = (int) xDir;
         yTL = (int) yDir;
 
-        SDL_Rect rect = {xTL, yTL, 2, sensor_sensitivity};
-        SDL_SetRenderDrawColor(renderer, 80+(20*(5-i)), 80+(20*(5-i)), 80+(20*(5-i)), 255);
+        SDL_Rect rect = {xTL, yTL, 4, sensor_sensitivity/3};
+        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
         SDL_RenderDrawRect(renderer, &rect);
         SDL_RenderFillRect(renderer, &rect);
     }
@@ -366,8 +367,8 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
         xTL = (int) xDir;
         yTL = (int) yDir;
 
-        SDL_Rect rect = {xTL, yTL, 2, sensor_sensitivity};
-        SDL_SetRenderDrawColor(renderer, 80+(20*(5-i)), 80+(20*(5-i)), 80+(20*(5-i)), 255);
+        SDL_Rect rect = {xTL, yTL, 4, sensor_sensitivity/3};
+        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
         SDL_RenderDrawRect(renderer, &rect);
         SDL_RenderFillRect(renderer, &rect);
     }
@@ -418,10 +419,6 @@ void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_r
             start = 1;
             robot->direction = RIGHT;
         }
-    
-        if (wallfound == 0){
-            robot->direction = RIGHT;
-        }
         
         if ((front_left_sensor == 0) && (front_right_sensor == 0)){
                 if (robot->currentSpeed<6)
@@ -429,7 +426,7 @@ void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_r
         }
         else if ((front_left_sensor>0) || (front_right_sensor>0) || (right_sensor>1)){
             if (robot->currentSpeed > 3){
-               robot->currentSpeed -=1;
+               robot->currentSpeed =DOWN;
             }
         }
 
@@ -452,7 +449,7 @@ void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_r
         }
         else if ((front_left_sensor >0) && (front_right_sensor >0) && (right_sensor> 0) && (leftest_sensor <=2)){
             if(robot ->currentSpeed >1){
-                robot->currentSpeed -=1;
+                robot->currentSpeed = DOWN;
             }
             robot->direction = LEFT;
         }
