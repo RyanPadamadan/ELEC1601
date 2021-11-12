@@ -451,7 +451,7 @@ void robotAutoMotorMove(struct Robot * robot, int front_left_sensor, int front_r
         }
         else if ((front_left_sensor >0) && (front_right_sensor >0) && (right_sensor> 0) && (leftest_sensor <=2)){
             if(robot ->currentSpeed >1){
-                robot->currentSpeed = DOWN;
+                robot->direction = DOWN;
             }
             robot->direction = LEFT;
         }
